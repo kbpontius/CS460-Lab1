@@ -12,7 +12,7 @@ import random
 
 class DelayHandler(object):
     def receive_packet(self,packet):
-        print Sim.scheduler.current_time(),packet.ident,packet.created,Sim.scheduler.current_time() - packet.created,packet.transmission_delay,packet.propagation_delay,packet.queueing_delay
+        print packet.source_address, packet.destination_address, Sim.scheduler.current_time(), packet.ident, packet.created, Sim.scheduler.current_time() - packet.created, packet.transmission_delay, packet.propagation_delay, packet.queueing_delay
 
 
 if __name__ == '__main__':
@@ -31,16 +31,16 @@ if __name__ == '__main__':
     n1.add_forwarding_entry(address=n2.get_address('n1'),link=n1.links[0])
     n2.add_forwarding_entry(address=n1.get_address('n2'),link=n2.links[0])
     n2.add_forwarding_entry(address=n3.get_address('n2'),link=n2.links[1])
-    n3.add_forwarding_entry(address=n2.get_address('n3'),link=n3.links[0])
+    # n3.add_forwarding_entry(address=n2.get_address('n3'),link=n3.links[0])
 
     # setup app
     d = DelayHandler()
     net.nodes['n2'].add_protocol(protocol="delay",handler=d)
 
     # send 1,000 packets
-    for i in range(0, 1000):
-        p = packet.Packet(destination_address=n3.get_address('n1'),ident=i,protocol='delay',length=1000)
-        Sim.scheduler.add(delay=0, event=p, handler=n1.send_packet)
+    p = packet.Packet(destination_address=n3.get_address('n1'),ident=1,protocol='delay',length=1000)
+    Sim.scheduler.add(delay=0, event=p, handler=n1.send_packet)
+
 
     # take the link down
     # Sim.scheduler.add(delay=1, event=None, handler=n1.get_link('n2').down)
