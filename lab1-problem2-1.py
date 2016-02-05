@@ -11,12 +11,27 @@ from networks.network import Network
 import random
 
 class DelayHandler(object):
-    def receive_packet(self,packet):
-        if packet.ident == 999999:
-            print "Current Time: %f, Packet Id: %d, Creation Time: %f, Elapsed Time: %f, TD: %f, PD: %f, QD: %f" % (Sim.scheduler.current_time(), packet.ident, packet.created, Sim.scheduler.current_time() - packet.created, packet.transmission_delay, packet.propagation_delay, packet.queueing_delay)
+    outputFile = file
+    packetCount = -1
 
+    def __init__(self, packetCount, outputFile):
+        self.packetCount = packetCount
+        self.outputFile = outputFile
+
+    def receive_packet(self,packet):
+        # if packet.ident == 999999:
+        print "Current Time: %f, Packet Id: %d, Creation Time: %f, Elapsed Time: %f, TD: %f, PD: %f, QD: %f" % (Sim.scheduler.current_time(), packet.ident, packet.created, Sim.scheduler.current_time() - packet.created, packet.transmission_delay, packet.propagation_delay, packet.queueing_delay)
+        print >> outputFile, Sim.scheduler.current_time(), packet.ident, packet.created, Sim.scheduler.current_time() - packet.created, packet.transmission_delay, packet.propagation_delay, packet.queueing_delay
+
+        if packet.ident == self.packetCount - 1:
+            self.endOutput()
+
+    def endOutput(self):
+        outputFile.close()
 
 if __name__ == '__main__':
+    outputFile = open('output.txt', 'w')
+
     # parameters
     Sim.scheduler.reset()
 
@@ -41,14 +56,17 @@ if __name__ == '__main__':
     # if packet is going from n1 -> n3
     n1.add_forwarding_entry(address=a3,link=n1.links[0])
 
+    packetCount = 100
+
     # setup app
-    d = DelayHandler()
+    d = DelayHandler(packetCount,outputFile)
     net.nodes['n1'].add_protocol(protocol="delay",handler=d)
     net.nodes['n2'].add_protocol(protocol="delay",handler=d)
     net.nodes['n3'].add_protocol(protocol="delay",handler=d)
 
-    for i in range(0, 1000000):
-        p = packet.Packet(destination_address=a3,ident=1,protocol='delay',length=8000)
+    # for i in range(0, 1000000):
+    for i in range(0, packetCount):
+        p = packet.Packet(destination_address=a3,ident=i,protocol='delay',length=8000)
         Sim.scheduler.add(delay=0, event=p, handler=n1.send_packet)
 
     # run the simulation
