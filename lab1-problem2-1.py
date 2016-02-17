@@ -2,17 +2,18 @@ import sys
 sys.path.append('..')
 
 from src.sim import Sim
-from src import node
-from src import link
 from src import packet
+from fileParser import Parser
 
 from networks.network import Network
 
 import random
 
 class DelayHandler(object):
+    outputName = "output.txt"
     outputFile = file
     packetCount = -1
+
 
     def __init__(self, packetCount, outputFile):
         self.packetCount = packetCount
@@ -25,9 +26,13 @@ class DelayHandler(object):
 
         if packet.ident == self.packetCount - 1:
             self.endOutput()
+            self.createGraph()
 
     def endOutput(self):
         outputFile.close()
+
+    def createGraph(self):
+        parser = Parser(self.outputName)
 
 if __name__ == '__main__':
     outputFile = open('output.txt', 'w')
