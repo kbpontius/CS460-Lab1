@@ -14,7 +14,6 @@ class DelayHandler(object):
     outputFile = file
     packetCount = -1
 
-
     def __init__(self, packetCount, outputFile):
         self.packetCount = packetCount
         self.outputFile = outputFile
@@ -31,7 +30,7 @@ class DelayHandler(object):
         outputFile.close()
 
 if __name__ == '__main__':
-    outputFile = open('output.txt', 'w')
+    outputFile = open('output-problem2-1a.txt', 'w')
 
     # parameters
     Sim.scheduler.reset()
