@@ -26,13 +26,9 @@ class DelayHandler(object):
 
         if packet.ident == self.packetCount - 1:
             self.endOutput()
-            self.createGraph()
 
     def endOutput(self):
         outputFile.close()
-
-    def createGraph(self):
-        parser = Parser(self.outputName)
 
 if __name__ == '__main__':
     outputFile = open('output.txt', 'w')
@@ -69,7 +65,6 @@ if __name__ == '__main__':
     net.nodes['n2'].add_protocol(protocol="delay",handler=d)
     net.nodes['n3'].add_protocol(protocol="delay",handler=d)
 
-    # for i in range(0, 1000000):
     for i in range(0, packetCount):
         p = packet.Packet(destination_address=a3,ident=i,protocol='delay',length=8000)
         Sim.scheduler.add(delay=0, event=p, handler=n1.send_packet)
