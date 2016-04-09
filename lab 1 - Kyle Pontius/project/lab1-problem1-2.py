@@ -11,15 +11,12 @@ from networks.network import Network
 import random
 
 class DelayHandler(object):
-
-    def __init__(self):
-        print 
     def receive_packet(self,packet):
         print Sim.scheduler.current_time(),packet.ident,packet.created,Sim.scheduler.current_time() - packet.created,packet.transmission_delay,packet.propagation_delay,packet.queueing_delay
         self.print_data(packet)
 
     def print_data(self, packet):
-        outputFile = open('output-problem1-1.txt', 'w')
+        outputFile = open('output-problem1-2.txt', 'w')
         print >> outputFile, Sim.scheduler.current_time(), packet.ident, packet.created, Sim.scheduler.current_time() - packet.created, packet.transmission_delay, packet.propagation_delay, packet.queueing_delay
         outputFile.close()
 
@@ -28,7 +25,7 @@ if __name__ == '__main__':
     Sim.scheduler.reset()
 
     # setup network
-    net = Network('config-2n-1Mbps-1000ms.txt')
+    net = Network('config-2n-100bps-10ms.txt')
 
     # setup routes
     n1 = net.get_node('n1')
