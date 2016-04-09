@@ -36,7 +36,7 @@ if __name__ == '__main__':
     Sim.scheduler.reset()
 
     # setup network
-    net = Network('config-3n-1Gbps-1Gbps-100ms-100ms.txt')
+    net = Network('config-3n-1Mbps-256Kbps-100ms-100ms.txt')
 
     # setup routes
     n1 = net.get_node('n1')
