@@ -30,7 +30,8 @@ class SendBuffer(object):
         ''' Get the next data that has not been sent yet. Return the
             data and the starting sequence number of this data. The
             total amount of data returned is at most size bytes but may
-            be less.'''
+            be less.
+            :rtype: object'''
         if self.next + size > self.last:
             size = self.last - self.next
         start = self.next - self.base
