@@ -60,6 +60,5 @@ if __name__ == '__main__':
     p = packet.Packet(destination_address=n2.get_address('n1'),ident=4,protocol='delay',length=1000)
     Sim.scheduler.add(delay=2, event=p, handler=n1.send_packet)
 
-
     # run the simulation
     Sim.scheduler.run()
