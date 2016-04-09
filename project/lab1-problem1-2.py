@@ -13,6 +13,12 @@ import random
 class DelayHandler(object):
     def receive_packet(self,packet):
         print Sim.scheduler.current_time(),packet.ident,packet.created,Sim.scheduler.current_time() - packet.created,packet.transmission_delay,packet.propagation_delay,packet.queueing_delay
+        self.print_data(packet)
+
+    def print_data(self, packet):
+        outputFile = open('output-problem1-2.txt', 'w')
+        print >> outputFile, Sim.scheduler.current_time(), packet.ident, packet.created, Sim.scheduler.current_time() - packet.created, packet.transmission_delay, packet.propagation_delay, packet.queueing_delay
+        outputFile.close()
 
 if __name__ == '__main__':
     # parameters
@@ -34,21 +40,6 @@ if __name__ == '__main__':
     # send one packet
     p = packet.Packet(destination_address=n2.get_address('n1'),ident=1,protocol='delay',length=1000)
     Sim.scheduler.add(delay=0, event=p, handler=n1.send_packet)
-
-    # take the link down
-    # Sim.scheduler.add(delay=1, event=None, handler=n1.get_link('n2').down)
-
-    # send one packet
-    # p = packet.Packet(destination_address=n2.get_address('n1'),ident=1,protocol='delay',length=1000)
-    # Sim.scheduler.add(delay=0, event=p, handler=n1.send_packet)
-
-    # bring the link up
-    # Sim.scheduler.add(delay=2, event=None, handler=n1.get_link('n2').up)
-
-    # send one packet (and now it goes through)
-    # p = packet.Packet(destination_address=n2.get_address('n1'),ident=1,protocol='delay',length=1000)
-    # Sim.scheduler.add(delay=0, event=p, handler=n1.send_packet)
-
 
     # run the simulation
     Sim.scheduler.run()
